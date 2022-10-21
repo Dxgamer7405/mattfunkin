@@ -870,6 +870,10 @@ class PlayState extends MusicBeatState
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		#if mobile
+		addAndroidControls();
+		androidControls.visible = true;
+		#end
 		if (FlxG.save.data.songPosition)
 		{
 			songPosBG.cameras = [camHUD];
@@ -1642,7 +1646,7 @@ class PlayState extends MusicBeatState
 			scoreTxt.text = "Suggested Offset: " + offsetTest;
 
 		}
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
+		if (FlxG.keys.justPressed.ENTER #if mobile || FlxG.android.justReleased.BACK #end && startedCountdown && canPause)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -1971,9 +1975,6 @@ class PlayState extends MusicBeatState
 
 	function endSong():Void
 	{
-		if (!loadRep)
-			rep.SaveReplay();
-
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
